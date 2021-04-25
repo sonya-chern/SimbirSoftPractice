@@ -23,15 +23,18 @@ namespace WebApplicationProject
         {
             foreach (var item in listPersons)
             {
-                if (item.firstName == name) yield return item;
+                if (item.firstName == name)
+                    yield return item;
             }
 
         }
 
         [HttpPost]
-        public void AddPerson([FromBody]PersonDto person)
+        public List<PersonDto> AddPerson([FromBody]PersonDto person)
         {
             listPersons.Add(person);
+            return listPersons;
+
         }
 
         public IActionResult DeletePerson(string lastN, string firstN, string patron)
