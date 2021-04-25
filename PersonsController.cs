@@ -11,6 +11,43 @@ namespace WebApplicationProject
     [ApiController]
     public class PersonsController : ControllerBase
     {
+        public static List<PersonDto> listPersons = new List<PersonDto>(3);
+        
+        [HttpGet]
+        public IEnumerable<PersonDto> GetPersons()
+        {
+            return listPersons;
+        }
 
+        public IEnumerable<PersonDto> GetPersonByName(string name)
+        {
+            foreach (var item in listPersons)
+            {
+                if (item.firstName == name) yield return item;
+            }
+
+        }
+
+        [HttpPost]
+        public void AddPerson([FromBody]PersonDto person)
+        {
+            listPersons.Add(person);
+        }
+
+        public IActionResult DeletePerson(string lastN, string firstN, string patron)
+        {
+            try
+            {
+                foreach (var item in listPersons)
+                {
+                    if (item.lastName == lastN && item.firstName == firstN && item.patronymic == patron) listPersons.Remove(item);
+                }
+                return Ok();
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
     }
 }

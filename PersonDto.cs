@@ -7,11 +7,11 @@ namespace WebApplicationProject
 {
     public class PersonDto
     {
-        private string lastName;
-        private string firstName;
-        private string patronymic;
-        private DateTime birthDay;
-        public static List<PersonDto> listPersons = new List<PersonDto>(3);
+        public string lastName { get; set; }
+        public string firstName { get; set; }
+        public string patronymic { get; set; }
+        public DateTime birthDay { get; set; } 
+       
     }
 
     

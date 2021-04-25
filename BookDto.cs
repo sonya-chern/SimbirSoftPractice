@@ -7,9 +7,9 @@ namespace WebApplicationProject
 {
     public class BookDto
     {
-        private string bookTitle;
-        PersonDto authorName;
-        private string booksGenre;
+        public string bookTitle { get; set; }
+        public string authorName { get; set; }
+        public string booksGenre { get; set; }
         public static List<BookDto> listBooks = new List<BookDto>(3);
     }
 
