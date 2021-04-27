@@ -26,7 +26,6 @@ namespace WebApplicationProject
                 if (item.firstName == name)
                     yield return item;
             }
-
         }
 
         [HttpPost]
@@ -34,7 +33,6 @@ namespace WebApplicationProject
         {
             listPersons.Add(person);
             return listPersons;
-
         }
 
         public IActionResult DeletePerson(string lastN, string firstN, string patron)
