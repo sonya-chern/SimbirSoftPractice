@@ -1,18 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationProject
 {
     public class PersonDto
     {
+        [Required]
+        [StringLength(30, MinimumLength = 1)]
         public string lastName { get; set; }
-        public string firstName { get; set; }
-        public string patronymic { get; set; }
-        public DateTime birthDay { get; set; } 
-       
-    }
 
-    
+        [Required]
+        [StringLength(30, MinimumLength = 1)]
+        public string firstName { get; set; }
+
+        [Required]
+        [StringLength(30, MinimumLength = 1)]
+        public string patronymic { get; set; }
+
+        [Required]
+        public DateTime birthDay { get; set; } 
+    }
+ 
 }
