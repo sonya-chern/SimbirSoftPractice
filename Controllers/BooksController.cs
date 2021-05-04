@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace WebApplication.Library.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route(template: "[controller]")]
     public class BooksController : ControllerBase
     {
         public static List<BookDto> listBooks = new List<BookDto>();
@@ -15,7 +15,7 @@ namespace WebApplication.Library.Controllers
             BooksController booksController = new BooksController();
         }
 
-        [HttpGet]
+        [HttpGet(template: "get")]
         public IEnumerable<BookDto> GetBooks()
         {
             return listBooks;
@@ -27,14 +27,14 @@ namespace WebApplication.Library.Controllers
             return listBooks.FindAll(item => item.AuthorName == nameAuthor);
         }
 
-        [HttpPost]
+        [HttpPost(template: "post")]
         public List<BookDto> AddBook([FromBody] BookDto book)
         {
             listBooks.Add(book);
             return listBooks;
         }
 
-        [HttpDelete]
+        [HttpDelete(template: "delete")]
         public IActionResult DeleteBook(string bookT, string nameAuthor)
         {
             foreach (var item in listBooks)
