@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication.Library.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace WebApplicationProject
+
+namespace WebApplication.Library.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    
     public class PersonsController : ControllerBase
     {
-        public static List<PersonDto> listPersons = new List<PersonDto>(3);
+        public static List<PersonDto> listPersons = new List<PersonDto>();
         
         [HttpGet]
         public IEnumerable<PersonDto> GetPersons()
@@ -19,36 +18,33 @@ namespace WebApplicationProject
             return listPersons;
         }
 
+        /// <summary>
+        /// 1.2.2 метод возвращающий список людей по имени
+        /// </summary>
+        [HttpGet]
         public IEnumerable<PersonDto> GetPersonByName(string name)
         {
-            foreach (var item in listPersons)
-            {
-                if (item.firstName == name)
-                    yield return item;
-            }
+            return listPersons.FindAll(item => item.FirstName == name);
         }
 
-        [HttpPost]
+        [HttpPost(template:"post")]
         public List<PersonDto> AddPerson([FromBody]PersonDto person)
         {
             listPersons.Add(person);
             return listPersons;
         }
 
+        [HttpDelete]
         public IActionResult DeletePerson(string lastN, string firstN, string patron)
         {
-            try
+            foreach (var item in listPersons)
             {
-                foreach (var item in listPersons)
+                if (item.LastName == lastN && item.FirstName == firstN && item.Patronymic == patron)
                 {
-                    if (item.lastName == lastN && item.firstName == firstN && item.patronymic == patron) listPersons.Remove(item);
+                    listPersons.Remove(item);
                 }
-                return Ok();
             }
-            catch
-            {
-                return NotFound();
-            }
+            return Ok();
         }
     }
 }

@@ -1,17 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication.Library.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace WebApplicationProject
+namespace WebApplication.Library.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
-        public static List<BookDto> listBooks = new List<BookDto>(3);
+        public static List<BookDto> listBooks = new List<BookDto>();
+
+        public BooksController()
+        {
+            BooksController booksController = new BooksController();
+        }
 
         [HttpGet]
         public IEnumerable<BookDto> GetBooks()
@@ -19,13 +21,10 @@ namespace WebApplicationProject
             return listBooks;
         }
 
-        public IEnumerable<BookDto> GetBookByAuthor(string name)
+        [HttpGet]
+        public IEnumerable<BookDto> GetBookByAuthor(string nameAuthor)
         {
-            foreach (var item in listBooks)
-            {
-                if (item.authorName == name) 
-                    yield return item;
-            }
+            return listBooks.FindAll(item => item.AuthorName == nameAuthor);
         }
 
         [HttpPost]
@@ -35,20 +34,17 @@ namespace WebApplicationProject
             return listBooks;
         }
 
-        public IActionResult DeleteBook(string bookT, string authorN)
+        [HttpDelete]
+        public IActionResult DeleteBook(string bookT, string nameAuthor)
         {
-            try
+            foreach (var item in listBooks)
             {
-                foreach (var item in listBooks)
+                if (item.BookTitle == bookT && item.AuthorName == nameAuthor)
                 {
-                    if (item.bookTitle == bookT && item.authorName == authorN) listBooks.Remove(item);
+                    listBooks.Remove(item);
                 }
-                return Ok();
             }
-            catch
-            {
-                return NotFound();
-            }
+            return Ok();
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication.Library.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace WebApplicationProject.BaseClasses
+namespace WebApplication.Library.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    
     public class PersonTakesABookController : ControllerBase
     {
         public static List<PersonTakesABook> listPersonsTakesABook = new List<PersonTakesABook>();

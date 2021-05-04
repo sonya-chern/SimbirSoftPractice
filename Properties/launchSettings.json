@@ -22,6 +22,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
+    },
+    "WebApplication.Library": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\Sofia\\source\\repos\\SimbirSoftPractice\\bin\\Debug\\netcoreapp3.1\\WebApplication.Library.exe",
+      "environmentVariables": {
+        "Key": "Value"
+      }
     }
   }
 }
