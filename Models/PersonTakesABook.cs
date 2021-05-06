@@ -12,7 +12,7 @@ namespace WebApplication.Library.Models
         public static BookDto BookTaken { get; set; }
 
         [Required]
-        public static DateTimeOffset BookDateTimeOffset { get; set; }
+        public static DateTimeOffset BookDate { get; set; }
 
         public PersonTakesABook personTakesABook;
         public PersonTakesABook()
