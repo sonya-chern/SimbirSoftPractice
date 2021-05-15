@@ -9,10 +9,10 @@ namespace WebApplication.Library.Models
         public int LibraryCardId { get; set; }
 
         [Required]
-        public BookDto TakenBook { get; set; }
+        public Book TakenBook { get; set; }
 
         [Required]
-        public PersonDto PersonTookBook { get; set; }
+        public Person PersonTookBook { get; set; }
 
         [Required]
         public static DateTimeOffset BookTakenDate { get; set; }

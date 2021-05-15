@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication.Library.Models
 {
-    public class BookDto
+    public class Book
     {
         [Key]
         public int BookId { get; set; }
@@ -13,7 +13,7 @@ namespace WebApplication.Library.Models
         public string BookTitle { get; set; }
 
         [Required]
-        public AuthorDto BooksAuthor { get; set; }
+        public Author BooksAuthor { get; set; }
 
         /// <summary>
         /// 2.2 свойство для создания связи м/у таблицами
@@ -21,11 +21,11 @@ namespace WebApplication.Library.Models
         [NotMapped]
         public LibraryCard ABook { get; set; }
         [NotMapped]
-        public ICollection<GenreDto> Genres { get; set; }
+        public ICollection<Genre> Genres { get; set; }
 
-        public BookDto()
+        public Book()
         {
-            Genres = new List<GenreDto>();
+            Genres = new List<Genre>();
         }
     } 
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication.Library.Models
 {
-    public class GenreDto
+    public class Genre
     {
         [Key]
         public int GenreId { get; set; }
@@ -13,11 +13,11 @@ namespace WebApplication.Library.Models
         public string GenreName { get; set; }
 
         [NotMapped]
-        public ICollection<BookDto> Books { get; set; }
+        public ICollection<Book> Books { get; set; }
 
-        public GenreDto()
+        public Genre()
         {
-            Books = new List<BookDto>();
+            Books = new List<Book>();
         }
     }
 }

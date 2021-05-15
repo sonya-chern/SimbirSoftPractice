@@ -1,14 +1,15 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+
 
 namespace WebApplication.Library.Models
 {
-    public class PersonDto
+    public class Author
     {
         [Key]
-        public int PersonId { get; set; }
-
+        public int AuthorId { get; set; }
         [Required]
         public string LastName { get; set; }
 
@@ -19,11 +20,17 @@ namespace WebApplication.Library.Models
 
         [Required]
         public DateTimeOffset BirthDay { get; set; }
-
         /// <summary>
         /// 2.2 свойство для создания связи м/у таблицами
         /// </summary>
         [NotMapped]
-        public LibraryCard APerson { get; set; }
+        public Book AnAuthor { get; set; }
+        public ICollection<Book> Books { get; set; }
+
+        public Author()
+        {
+            Books = new List<Book>();
+        }
     }
+
 }
