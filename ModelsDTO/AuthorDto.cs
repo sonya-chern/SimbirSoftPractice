@@ -1,16 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace WebApplication.Library.Models
+namespace WebApplication.Library.ModelsDTO
 {
-    [Table("people")]
-    public class Person
+    public class AuthorDto
     {
         [Key]
-        public int PersonId { get; set; }
-
+        public int AuthorId { get; set; }
         [Required]
         public string LastName { get; set; }
 
@@ -21,7 +18,5 @@ namespace WebApplication.Library.Models
 
         [Required]
         public DateTimeOffset BirthDay { get; set; }
-
-        public virtual LibraryCard APerson { get; set; }
     }
 }

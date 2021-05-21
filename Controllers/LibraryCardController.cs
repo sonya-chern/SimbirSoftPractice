@@ -7,7 +7,7 @@ namespace WebApplication.Library.Controllers
     [ApiController]
     [Route("api/[controller]")]
     
-    public class PersonTakesABookController : ControllerBase
+    public class LibraryCardController : ControllerBase
     {
         public static List<LibraryCard> listPersonsTakesABook = new List<LibraryCard>();
 

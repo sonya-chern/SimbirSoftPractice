@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplication.Library.Models;
 
+
 namespace WebApplication.Library.Context
 {
     public class LibraryContext : DbContext
@@ -11,14 +12,10 @@ namespace WebApplication.Library.Context
         public DbSet<Person> People { get; set; }
         public DbSet<LibraryCard> LibraryCards { get; set; }
 
-        public LibraryContext()
-        {
-            Database.EnsureCreated();
-        }
-
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
-        { 
-        
+        {
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,12 +35,12 @@ namespace WebApplication.Library.Context
                 .WithMany(s => s.Books);
 
             modelBuilder.Entity<LibraryCard>()
-                  .HasOne(c => c.PersonTookBook)
+                  .HasOne(c => c.APerson)
                   .WithOne(c => c.APerson);
 
-            modelBuilder.Entity<LibraryCard>()
-                  .HasOne(c => c.TakenBook)
-                  .WithOne(c => c.ABook);
+            modelBuilder.Entity<Book>()
+                  .HasOne(c => c.ABook)
+                  .WithMany(c => c.Books);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-using Microsoft.EntityFrameworkCore;
-using WebApplication.Library.Context;
+
 
 namespace WebApplication.Library
 {

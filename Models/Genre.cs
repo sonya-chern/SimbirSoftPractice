@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication.Library.Models
 {
+    [Table("dim_genres")]
     public class Genre
     {
         [Key]
@@ -12,8 +13,7 @@ namespace WebApplication.Library.Models
         [Required]
         public string GenreName { get; set; }
 
-        [NotMapped]
-        public ICollection<Book> Books { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
 
         public Genre()
         {

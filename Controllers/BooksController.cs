@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication.Library.Models;
+using WebApplication.Library.Repositories;
+using WebApplication.Library.Context;
 using System.Collections.Generic;
+
  
 namespace WebApplication.Library.Controllers
 {
@@ -9,38 +13,64 @@ namespace WebApplication.Library.Controllers
    
     public class BooksController : ControllerBase
     {
-        public static List<BookDto> listBooks = new List<BookDto>();
+        private readonly BookRepository _bookRp;
 
-        [HttpGet]
-        public IEnumerable<BookDto> GetBooks()
+        public BooksController(BookRepository bookRp)
         {
+            _bookRp = bookRp;
+        }
+
+        [HttpGet("{id}")]
+        public IQueryable<Book> GetBooksByAuthorId(int authorId)
+        {
+            var listBooks = _bookRp.GetBooksByAuthor(authorId);
             return listBooks;
         }
 
-        [HttpGet ("{string}")]
-        public IEnumerable<BookDto> GetBookByAuthor(string nameAuthor)
+        /// <summary>
+        /// получение всех книг по жанру
+        /// </summary>
+
+        [HttpGet]
+        public IQueryable<Book> GetGenreListBook(Genre genre)
         {
-            return listBooks.FindAll(item => item.AuthorName == nameAuthor);
+            return _bookRp.GetBooksByGenre(genre);
         }
 
         [HttpPost]
-        public IEnumerable<BookDto> AddBook([FromBody] BookDto book)
+        public IActionResult AddBook([FromBody] Book book)
         {
-            listBooks.Add(book);
-            return listBooks;
+            _bookRp.Create(book);
+            _bookRp.Save();
+            return Ok(book);
         }
 
-        [HttpDelete]
-        public IActionResult DeleteBook(string bookT, string nameAuthor)
+        [HttpPut]
+        public IActionResult UpdateBookGenre(Book newBook)
         {
-            foreach (var item in listBooks)
+            Book book = _bookRp.GetBook(newBook.BookId);
+            if (book != null)
             {
-                if (item.BookTitle == bookT && item.AuthorName == nameAuthor)
-                {
-                    listBooks.Remove(item);
-                }
+                _bookRp.UpdateGenre(newBook);
+                return Ok();
             }
-            return Ok();
+            else return NotFound("Книга не найдена");
+        }
+        [HttpDelete]
+        public IActionResult DeleteById(int bookId)
+        {
+            Book book = _bookRp.GetBook(bookId);
+            if (book != null)
+            {
+                if (book.AuthorId == 0)
+                {
+                    _bookRp.DeleteById(bookId);
+                    _bookRp.Save();
+                    return Ok();
+                }
+                else return NotFound("Книга находится у пользователя");
+            }
+            else return NotFound("Книга с данным ID не найдена");
         }
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication.Library.Models
 {
+    [Table("books")]
     public class Book
     {
         [Key]
@@ -15,13 +16,14 @@ namespace WebApplication.Library.Models
         [Required]
         public Author BooksAuthor { get; set; }
 
-        /// <summary>
         /// 2.2 свойство для создания связи м/у таблицами
         /// </summary>
-        [NotMapped]
-        public LibraryCard ABook { get; set; }
-        [NotMapped]
-        public ICollection<Genre> Genres { get; set; }
+        [ForeignKey(nameof(LibraryCard))]
+        public int AuthorId { get; set; }
+
+        public virtual LibraryCard ABook { get; set; }
+
+        public virtual ICollection<Genre> Genres { get; set; }
 
         public Book()
         {

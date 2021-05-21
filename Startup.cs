@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplication.Library.Context;
 using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore.Design;
+using WebApplication.Library.Repositories;
+
 
 namespace WebApplication.Library
 {
@@ -17,11 +20,14 @@ namespace WebApplication.Library
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<LibraryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<GenreRepository>();
+            services.AddTransient<PersonRepository>();
+            var connectionString = Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
+            var alterConnectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<LibraryContext>(options => options.UseSqlServer(connectionString));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,7 +47,7 @@ namespace WebApplication.Library
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "api/{controller}");
+                    pattern: "api/{controller}/{id?}");
             });
 
         }

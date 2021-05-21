@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace WebApplication.Library.Models
 {
+    [Table("authors")]
     public class Author
     {
         [Key]
@@ -20,12 +21,8 @@ namespace WebApplication.Library.Models
 
         [Required]
         public DateTimeOffset BirthDay { get; set; }
-        /// <summary>
-        /// 2.2 свойство для создания связи м/у таблицами
-        /// </summary>
-        [NotMapped]
-        public Book AnAuthor { get; set; }
-        public ICollection<Book> Books { get; set; }
+     
+        public virtual ICollection<Book> Books { get; set; }
 
         public Author()
         {
