@@ -7,6 +7,7 @@ using WebApplication.Library.Context;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Library.Repositories;
 using WebApplication.Library.Services;
+using WebApplication.Library.Models;
 
 
 namespace WebApplication.Library
@@ -23,15 +24,16 @@ namespace WebApplication.Library
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<GenreRepository>();
+            services.AddTransient<PersonRepository>();
+            services.AddTransient<AuthorRepository>();
+            services.AddTransient<BookRepository>();
+            services.AddTransient<LibraryCardRepository>();
+            services.AddTransient<ILibraryService<Author>, AuthorService>();
+            services.AddTransient<ILibraryService<Person>, PersonService>();
+            services.AddTransient<ILibraryService<Genre>, GenreService>();
+            services.AddTransient<ILibraryService<Book>, BookService>();
 
-            //заменить на интерфейс
-
-            //services.AddTransient<GenreRepository>();
-            //services.AddTransient<PersonRepository>();
-            //services.AddTransient<AuthorRepository>();
-            //services.AddTransient<BookRepository>();
-            //services.AddTransient<LibraryCardRepository>();
-            services.AddTransient<ILibraryService, AuthorService>();
             var connectionString = Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
             var alterConnectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(connectionString));
