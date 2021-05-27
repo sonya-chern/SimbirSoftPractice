@@ -24,41 +24,54 @@ namespace WebApplication.Library.Repositories
             return _db.Authors.Find(id);
         }
 
-        public IQueryable<Author> GetBookList(Author author)
-        {
-            var bookList = (IQueryable<Author>)author.Books.ToList();
+        /// <summary>
+        /// Выводит список книг автора: автор + книги + жанры
+        /// </summary>
+        public IQueryable<Author> GetBookList(int authorId)
+        { 
+            var bookList = (IQueryable<Author>)_db.Authors.Find(authorId).Books.ToList();
             return bookList;
         }
 
-        public void Create(Author author)
+        public bool Create(Author author)
         {
-            _db.Authors.Add(author);
+            try
+            {
+                _db.Authors.Add(author);
+                _db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public void Update(Author author)
+        public void Update(Author newAuthor)
         {
+            Author author = _db.Authors.Find(newAuthor.AuthorId);
+            author.FirstName = newAuthor.FirstName;
+            author.LastName = newAuthor.LastName;
+            author.Patronymic = newAuthor.Patronymic;
+            author.BirthDay = newAuthor.BirthDay;
             _db.Entry(author).State = EntityState.Modified;
+            _db.SaveChanges();
         }
         
         /// <summary>
-        /// метод удаляет автора только если у него нет книг 
+        /// Удаляет автора только если у него нет книг 
         /// </summary>
-        public bool DeleteAuthor(Author author)
+        public bool DeleteAuthor(int authorId)
         {
+            Author author = _db.Authors.Find(authorId);
             int sizeAuthorBooks = author.Books.Count();
             if (sizeAuthorBooks == 0)
             {
                 _db.Authors.Remove(author);
-                Save();
+                _db.SaveChanges();
                 return true;
             }
             else return false;
         }
-
-        public void Save()
-        {
-            _db.SaveChanges();
-        }
-
     }
 }

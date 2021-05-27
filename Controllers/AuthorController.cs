@@ -1,62 +1,57 @@
-﻿using WebApplication.Library.Repositories;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication.Library.Services;
 using WebApplication.Library.Models;
 
 
 namespace WebApplication.Library.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class AuthorController : ControllerBase
     {
-        private readonly AuthorRepository _authorRp;
+        private readonly AuthorService _authorSr;
 
-        public AuthorController(AuthorRepository authorRp)
+        public AuthorController(AuthorService authorSr)
         {
-            _authorRp = authorRp;
+            _authorSr = authorSr;
         }
 
+        /// <summary>
+        /// Получить список всех авторов
+        /// </summary>
         [HttpGet]
         public IActionResult GetAllAuthor()
         {
-            var allAuthor = _authorRp.GetAuthorList();
-            return Ok(allAuthor);
+            var allAuthor = _authorSr.GetAuthorList();
+            return new ObjectResult(allAuthor);
         }
 
+        /// <summary>
+        /// Выводит список книг автора: автор + книги + жанры
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult GetAuthorBook(int authorId)
         {
-            var author = _authorRp.GetAuthor(authorId);
-            if (author != null)
-            {
-                var allAuthorBook = _authorRp.GetBookList(author);
-                return Ok(allAuthorBook);
-            }
-            else return NotFound("Автор не найден");
+            var allAuthor = _authorSr.GetAuthorBook(authorId);
+            return new ObjectResult(allAuthor);
         }
 
+        /// <summary>
+        /// Добавляет автора
+        /// </summary>
         [HttpPost]
-        public IActionResult AddAuthor([FromBody] Author author)
+        public void AddAuthor([FromBody] Author author)
         {
-            _authorRp.Create(author);
-            _authorRp.Save();
-            var authorAndBooks = _authorRp.GetAuthor(author.AuthorId).Books;
-            return Ok(authorAndBooks);
+            _authorSr.Create(author);
         }
 
+        /// <summary>
+        /// Удаляет автора по ID, если нет книг
+        /// </summary>
         [HttpDelete]
-        public IActionResult DeleteAuthor(int authorId)
+        public void DeleteAuthor(int authorId)
         {
-            var author = _authorRp.GetAuthor(authorId);
-            if(author!=null)
-            {
-                if (_authorRp.DeleteAuthor(author))
-                {
-                    return Ok("Автор удален");
-                }
-                else return BadRequest("Автор не может быть удален");
-            }
-            else return NotFound("Автор не найден");
+            _authorSr.Delete(authorId);       
         }
     }
 }

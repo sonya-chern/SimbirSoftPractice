@@ -10,7 +10,7 @@ using AutoMapper;
 
 namespace WebApplication.Library.Repositories
 {
-    public class PersonRepository : IDisposable
+    public class PersonRepository
     {
         private readonly LibraryContext _db;
 
@@ -46,64 +46,44 @@ namespace WebApplication.Library.Repositories
         public void Create(Person person)
         {
             _db.People.Add(person);
+            _db.SaveChanges();
         }
 
         public void AddBook(int personId, Book book)
         {
             GetPerson(personId).APerson.Books.Add(book);
+            _db.SaveChanges();
         }
 
         public void DeleteBook(int personId, Book book)
         {
             GetPerson(personId).APerson.Books.Remove(book);
+            _db.SaveChanges();
         }
-        public Person Update(int personId, Person newPerson)
+        public Person Update(Person newPerson)
         {
-            Person person = GetPerson(personId);
+            Person person = GetPerson(newPerson.PersonId);
             person.FirstName = newPerson.FirstName;
             person.LastName = newPerson.LastName;
             person.Patronymic = newPerson.Patronymic;
             person.BirthDay = newPerson.BirthDay;
             _db.Entry(person).State = EntityState.Modified;
+            _db.SaveChanges();
             return person;
         }
 
         public void Delete(int id)
         {
             Person person = _db.People.Find(id);
-            if (person != null)
-                _db.People.Remove(person);
+            _db.People.Remove(person);
+            _db.SaveChanges();
         }
 
         public void DeleteByName(Person newPerson)
         {
-            Person person = _db.People.Find(newPerson);
-            if (person != null)
-                _db.People.Remove(person);
-        }
-
-        public void Save()
-        {
+            Person person = _db.People.Find(newPerson.PersonId);
+            _db.People.Remove(person);
             _db.SaveChanges();
-        }
-        private bool disposed = false;
-
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _db.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

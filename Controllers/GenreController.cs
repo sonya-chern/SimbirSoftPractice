@@ -1,6 +1,7 @@
-﻿using WebApplication.Library.Repositories;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Library.Models;
+using WebApplication.Library.Services;
 
 namespace WebApplication.Library.Controllers
 {
@@ -9,44 +10,36 @@ namespace WebApplication.Library.Controllers
 
     public class GenreController : ControllerBase
     {
-        private readonly GenreRepository _genreRp;
+        private readonly GenreService _genreSr;
 
-        public GenreController(GenreRepository genreRp)
+        public GenreController(GenreService genreSr)
         {
-            _genreRp = genreRp;
+            _genreSr = genreSr;
         }
-
+        /// <summary>
+        /// Выводит все жанры
+        /// </summary>
         [HttpGet]
-        public IActionResult GetAllGenres()
+        public IQueryable<Book> GetAllGenres()
         {
-            var allGenres = _genreRp.GetGenreList();
-            return Ok(allGenres);
+            return _genreSr.GetGenreList();
         }
 
         /// <summary>
-        /// Вывод статистики Жанр - количество книг
+        /// Выводит статистику Жанр - количество книг
         /// </summary>
         [HttpGet("{id}")]
         public IActionResult GetGenreCountBooks(int genreId)
         {
-            var genre = _genreRp.GetGenre(genreId);
-            if (genre != null)
-            {
-                var allGenreCountBooks = _genreRp.GetGenreNumberBooks(genre);
-                return Ok(allGenreCountBooks);
-            }
-            else return NotFound("Жанр не найден");
-
+            _genreSr.GetGenreCountBooks(genreId);
+             return Ok();
         }
 
         [HttpPost]
         public IActionResult AddGenre([FromBody] Genre genre)
         {
-            _genreRp.Create(genre);
-            _genreRp.Save();
-            return Ok("Жанр добавлен");
+            _genreSr.Create(genre);
+            return Ok();
         }
-
-
     }
 }

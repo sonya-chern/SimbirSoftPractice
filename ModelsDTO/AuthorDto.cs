@@ -6,7 +6,7 @@ namespace WebApplication.Library.ModelsDTO
 {
     public class AuthorDto
     {
-        [Key]
+        [Required]
         public int AuthorId { get; set; }
         [Required]
         public string LastName { get; set; }

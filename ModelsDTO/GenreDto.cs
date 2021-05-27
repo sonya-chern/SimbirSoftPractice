@@ -4,7 +4,7 @@ namespace WebApplication.Library.ModelsDTO
 {
     public class GenreDto
     {
-        [Key]
+        [Required]
         public int GenreId { get; set; }
 
         [Required]

@@ -1,4 +1,4 @@
-﻿using WebApplication.Library.Repositories;
+﻿using WebApplication.Library.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Library.Models;
 
@@ -10,101 +10,81 @@ namespace WebApplication.Library.Controllers
     
     public class PersonsController : ControllerBase
     {
-        private readonly PersonRepository _personRp;
+        private readonly PersonService _personSr;
 
-        public PersonsController(PersonRepository personRp)
+        public PersonsController(PersonService personSr)
         {
-            _personRp = personRp;
+            _personSr = personSr;
         }
 
+        /// <summary>
+        /// Показывает взятые пользователем книги(Книги - автор - жанр)
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult GetPersonsBook(int personId)
         {
-            Person newPerson = _personRp.GetPerson(personId);
-            if (newPerson != null)
-            {
-                var result = _personRp.GetBookByPersonId(personId);
-                return Ok(result);
-            }
-            else return NotFound("Пользователь с данным ID не найден");
+            var result = _personSr.GetBookByPersonId(personId);
+            return Ok(result);
         }
 
+        /// <summary>
+        /// Добавляет книгу в карточку пользователя
+        /// </summary>
         [HttpPut]
-        public IActionResult PersonTakesBook(int personId, Book book)
+        public IActionResult PersonTakesBook([FromBody]int personId, Book book)
         {
-            Person newPerson = _personRp.GetPerson(personId);
-            if (newPerson != null)
-            {
-                _personRp.AddBook(personId, book);
-                _personRp.Save();
-                return Ok();
-            }
-            else return NotFound("Пользователь с данным ID не найден");
+            _personSr.PersonTakesBook(personId, book);
+            return Ok();        
         }
 
-
+        /// <summary>
+        /// Изменяет данные о пользователе
+        /// </summary>
         [HttpPut]
-        public IActionResult ChangePerson(int personId, Person newPerson)
+        public IActionResult ChangePerson(Person newPerson)
         {
-            Person testPerson = _personRp.GetPerson(personId);
-            if (testPerson != null)
-            {
-                var result = _personRp.Update(personId, newPerson);
-                _personRp.Save();
-                return Ok(result);
-            }
-            else return NotFound("Пользователь с данным ID не найден");
+            _personSr.Update(newPerson);
+            return Ok();
         }
 
+        /// <summary>
+        /// Добавляет данные о пользователе
+        /// </summary>
         [HttpPost]
         public Person AddPerson(Person person)
         {
-            _personRp.Create(person);
-            _personRp.Save();
+            _personSr.Create(person);
             return person;
         }
 
-        [HttpDelete]
+        /// <summary>
+        /// Удаляет пользователя по ID
+        /// </summary>
+        [HttpDelete("{id}")]
         public IActionResult DeletePersonById(int personId)
-        {
-            try
-            {
-                _personRp.Delete(personId);
-                _personRp.Save();
-                return Ok();
-            }
-            catch
-            {
-                return NotFound("Пользователь с данным ID не найден");
-            }
+        { 
+            _personSr.Delete(personId);
+            return Ok();
         }
 
+        /// <summary>
+        /// Удаляет пользователя по ФИО
+        /// </summary>
         [HttpDelete]
         public IActionResult DeletePersonByName(Person newPerson)
         {
-            try
-            {
-                _personRp.DeleteByName(newPerson);
-                _personRp.Save();
-                return Ok();
-            }
-            catch
-            {
-                return NotFound("Ошибка удаления");
-            }
+            _personSr.DeleteByName(newPerson);
+            return Ok();
         }
 
+        /// <summary>
+        /// Удаляет книгу из списка книг пользователя
+        /// </summary>
         [HttpDelete]
         public IActionResult PersonReturnsBook(int personId, Book book)
         {
-            Person newPerson = _personRp.GetPerson(personId);
-            if (newPerson != null)
-            {
-                _personRp.DeleteBook(personId, book);
-                _personRp.Save();
-                return Ok();
-            }
-            else return NotFound("Пользователь с данным ID не найден");
+            _personSr.DeleteBook(personId, book);
+            return Ok();
         }
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using WebApplication.Library.Models;
-using WebApplication.Library.ModelsDTO;
 using WebApplication.Library.Context;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+//using WebApplication.Library.
 
 
 namespace WebApplication.Library.Repositories
@@ -47,26 +44,30 @@ namespace WebApplication.Library.Repositories
             return result;
         }
 
-        public void Create(Book book)
+        public bool Create(Book book)
         {
-            _db.Books.Add(book);
+            try
+            {
+                _db.Books.Add(book);
+                _db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public void UpdateGenre(Book book)
+        public void UpdateGenre(Book newBook)
         {
-            var record = _db.Books.SingleOrDefault(x => x.BookId == book.BookId);
-            record.Genres = book.Genres;
+            var record = _db.Books.SingleOrDefault(x => x.BookId == newBook.BookId);
+            record.Genres = newBook.Genres;
         }
 
         public void DeleteById(int bookId)
         {
              _db.Books.Remove(GetBook(bookId));
-        }
-
-        public void Save()
-        {
             _db.SaveChanges();
         }
-       
     }
 }

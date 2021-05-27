@@ -25,6 +25,9 @@ namespace WebApplication.Library.Repositories
             return _db.Genres.Find(id);
         }
 
+        /// <summary>
+        /// Выводит статистику Жанр - количество книг
+        /// </summary>
         public IQueryable<Genre> GetGenreNumberBooks(Genre genre)
         {
             var result = (IQueryable<Genre>)_db.Genres.Where(g => g.GenreId == genre.GenreId)
@@ -32,25 +35,32 @@ namespace WebApplication.Library.Repositories
             return result;
         }
 
-        public void Create(Genre genre)
+        public bool Create(Genre genre)
         {
-            _db.Genres.Add(genre);
+            try
+            {
+                _db.Genres.Add(genre);
+                _db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public void Update(Genre genre)
+        public void Update(int genreId, Genre newGenre)
         {
+            Genre genre = _db.Genres.Find(genreId);
+            genre.GenreName = newGenre.GenreName;
             _db.Entry(genre).State = EntityState.Modified;
+            _db.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(int genreId)
         {
-            Genre genre = _db.Genres.Find(id);
-            if (genre != null)
-                _db.Genres.Remove(genre);
-        }
-
-        public void Save()
-        {
+            Genre genre = GetGenre(genreId);
+            _db.Genres.Remove(genre);
             _db.SaveChanges();
         }
     }
