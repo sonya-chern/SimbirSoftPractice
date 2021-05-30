@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using WebApplication.Library.Models;
 using WebApplication.Library.Context;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +14,10 @@ namespace WebApplication.Library.Repositories
             _db = db;
         }
 
-        public IEnumerable<LibraryCard> GetLibraryCardList()
+        public LibraryCard GetLibraryCardList(int libraryCardId)
         {
-            return _db.LibraryCards;
+
+            return _db.LibraryCards.Find(libraryCardId);
         }
 
         public LibraryCard GetLibraryCard(int id)

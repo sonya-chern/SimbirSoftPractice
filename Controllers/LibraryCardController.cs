@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication.Library.Models;
-using System.Collections.Generic;
+using WebApplication.Library.Services;
 
 namespace WebApplication.Library.Controllers
 {
@@ -9,13 +9,18 @@ namespace WebApplication.Library.Controllers
     
     public class LibraryCardController : ControllerBase
     {
-        public static List<LibraryCard> listPersonsTakesABook = new List<LibraryCard>();
+        private readonly LibraryCardService _libraryCardSr;
+
+        public LibraryCardController(LibraryCardService libraryCardSr)
+        {
+            _libraryCardSr = libraryCardSr;
+        }
 
         [HttpPost]
-        public List<LibraryCard> AddPerson([FromBody] LibraryCard personTakesABook)
+        public IActionResult AddCard([FromBody] LibraryCard libraryCard)
         {
-            listPersonsTakesABook.Add(personTakesABook);
-            return listPersonsTakesABook;
+            _libraryCardSr.Create(libraryCard);
+            return Ok();
         }
     }
 }

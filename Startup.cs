@@ -33,6 +33,7 @@ namespace WebApplication.Library
             services.AddTransient<ILibraryService<Person>, PersonService>();
             services.AddTransient<ILibraryService<Genre>, GenreService>();
             services.AddTransient<ILibraryService<Book>, BookService>();
+            services.AddTransient<ILibraryService<LibraryCard>, LibraryCardService>();
 
             var connectionString = Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
             var alterConnectionString = Configuration.GetConnectionString("DefaultConnection");

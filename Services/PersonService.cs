@@ -1,6 +1,5 @@
 ﻿using WebApplication.Library.Models;
 using WebApplication.Library.Repositories;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication.Library.Services
