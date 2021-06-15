@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication.Library.Repositories
 {
-    public class AuthorRepository
+    public class AuthorRepository : IAuthorRepository
     {
         private readonly LibraryContext _db;
 

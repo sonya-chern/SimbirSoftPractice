@@ -16,7 +16,7 @@ namespace WebApplication.Library.Services
         /// <summary>
         /// Проверяет есть ли пользователь
         /// </summary>
-        public bool GetById(int personId)
+        public bool FindById(int personId)
         {
             Person person = _personRp.GetPerson(personId);
             return (person != null);
@@ -27,7 +27,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public IActionResult GetBookByPersonId(int personId)
         {
-            if (GetById(personId))
+            if (FindById(personId))
             {
                 var result = _personRp.GetBookByPersonId(personId);
                 return new OkObjectResult(result);
@@ -40,7 +40,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public IActionResult PersonTakesBook(int personId, Book book)
         {
-            if (GetById(personId))
+            if (FindById(personId))
             {
                 _personRp.AddBook(personId, book);
                 return new OkObjectResult("Книга добавлена в карточку пользователя");
@@ -53,7 +53,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public void Update(Person person)
         {
-            if (GetById(person.PersonId))
+            if (FindById(person.PersonId))
             {
                 _personRp.Update(person);
             }
@@ -64,7 +64,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public IActionResult Create(Person person)
         {
-            if (GetById(person.PersonId))
+            if (FindById(person.PersonId))
             {
                 _personRp.Create(person);
                 return new OkObjectResult("Пользователь добавлен");
@@ -77,7 +77,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public IActionResult Delete(int personId)
         {
-            if (GetById(personId))
+            if (FindById(personId))
             {
                 _personRp.Delete(personId);
                 return new OkObjectResult("Пользователь удален");
@@ -87,7 +87,7 @@ namespace WebApplication.Library.Services
 
         public IActionResult DeleteByName(Person newPerson)
         {
-            if (GetById(newPerson.PersonId))
+            if (FindById(newPerson.PersonId))
             {
                 _personRp.DeleteByName(newPerson);
                 return new OkObjectResult("Пользователь удален");
@@ -100,7 +100,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public IActionResult DeleteBook(int personId, Book book)
         {
-            if (GetById(personId))
+            if (FindById(personId))
             {
                 _personRp.DeleteBook(personId, book);
                 return new OkObjectResult("Книга удалена из списка книг пользователя");

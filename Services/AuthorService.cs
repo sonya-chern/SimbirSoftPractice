@@ -7,9 +7,9 @@ namespace WebApplication.Library.Services
 {
     public class AuthorService : ILibraryService<Author>
     {
-        private readonly AuthorRepository _authorRp;
+        private readonly IAuthorRepository _authorRp;
 
-        public AuthorService(AuthorRepository authorRp)
+        public AuthorService(IAuthorRepository authorRp)
         {
             _authorRp = authorRp;
         }
@@ -17,7 +17,7 @@ namespace WebApplication.Library.Services
         /// <summary>
         /// Проверяет есть ли автор
         /// </summary>
-        public bool GetById(int authorId)
+        public bool FindById(int authorId)
         {
             Author author = _authorRp.GetAuthor(authorId);
             return (author != null);
@@ -48,7 +48,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public void Update(Author author)
         {
-            if (GetById(author.AuthorId))
+            if (FindById(author.AuthorId))
             {
                 _authorRp.Update(author);
             }
@@ -59,7 +59,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public IActionResult Delete(int genreId)
         {
-            if (GetById(genreId))
+            if (FindById(genreId))
             {
                 if (_authorRp.DeleteAuthor(genreId))
                 {
@@ -75,7 +75,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public IActionResult GetAuthorBook(int authorId)
         {
-            if(GetById(authorId))
+            if(FindById(authorId))
             {
                 var allAuthorBook = _authorRp.GetBookList(authorId);
                 return new ObjectResult(allAuthorBook);

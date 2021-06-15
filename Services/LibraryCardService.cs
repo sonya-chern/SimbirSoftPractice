@@ -16,7 +16,7 @@ namespace WebApplication.Library.Services
         /// <summary>
         /// Проверяет есть ли карточка пользователя
         /// </summary>
-        public bool GetById(int libraryCardId)
+        public bool FindById(int libraryCardId)
         {
             LibraryCard libraryCard = _libraryCardRp.GetLibraryCard(libraryCardId);
              return (libraryCard != null);
@@ -36,7 +36,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public void Update(LibraryCard libraryCard)
         {
-            if (GetById(libraryCard.LibraryCardId))
+            if (FindById(libraryCard.LibraryCardId))
             {
                 _libraryCardRp.Update(libraryCard);
             }
@@ -47,7 +47,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public IActionResult Delete(int libraryCardId)
         {
-            if (GetById(libraryCardId))
+            if (FindById(libraryCardId))
             {
                 _libraryCardRp.Delete(libraryCardId);
                 return new OkObjectResult("Карточка пользователя удалена");

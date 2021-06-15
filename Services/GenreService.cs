@@ -17,7 +17,7 @@ namespace WebApplication.Library.Services
         /// <summary>
         /// Проверяет есть ли жанр
         /// </summary>
-        public bool GetById(int genreId)
+        public bool FindById(int genreId)
         {
             Genre genre = _genreRp.GetGenre(genreId);
             return (genre != null);
@@ -48,7 +48,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public void Update(Genre newGenre)
         {
-            GetById(newGenre.GenreId);
+            FindById(newGenre.GenreId);
             _genreRp.Update(newGenre.GenreId, newGenre);
         }
 
@@ -59,7 +59,7 @@ namespace WebApplication.Library.Services
         {
             try
             {
-                GetById(genreId);
+                FindById(genreId);
                 _genreRp.Delete(genreId);
                 return new OkObjectResult("Жанр удален");
             }

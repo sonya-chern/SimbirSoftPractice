@@ -18,7 +18,7 @@ namespace WebApplication.Library.Services
         /// <summary>
         /// Проверить есть ли книга
         /// </summary>
-        public bool GetById(int bookId)
+        public bool FindById(int bookId)
         {
             Book book = _bookRp.GetBook(bookId);
             return (book != null);
@@ -57,7 +57,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public void Update(Book newBook)
         {
-            GetById(newBook.BookId);
+            FindById(newBook.BookId);
             _bookRp.UpdateGenre(newBook);
         }
 
@@ -66,7 +66,7 @@ namespace WebApplication.Library.Services
         /// </summary>
         public IActionResult Delete(int bookId)
         {
-            GetById(bookId);
+            FindById(bookId);
             Book book = _bookRp.GetBook(bookId);
             if (book.AuthorId == 0)
             {
