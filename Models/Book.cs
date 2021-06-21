@@ -13,13 +13,13 @@ namespace WebApplication.Library.Models
         [Required]
         public string BookTitle { get; set; }
 
-        [Required]
-        public Author BooksAuthor { get; set; }
-
         /// 2.2 свойство для создания связи м/у таблицами
         /// </summary>
+        [Required]
         [ForeignKey(nameof(LibraryCard))]
         public int AuthorId { get; set; }
+
+        public virtual Author BooksAuthor { get; set; }
 
         public virtual LibraryCard ABook { get; set; }
 
